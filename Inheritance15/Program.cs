@@ -14,8 +14,8 @@ namespace Inheritance15
             // Steve's yearly salary is $50,000
             var employees = new List<Employee>
             {
-                new HourlyEmployee{Name = "Bob"},
-                new SalariedEmployee{Name = "Steve"}
+                new HourlyEmployee{Name = "Bob", HourlyRate = 27.50},
+                new SalariedEmployee{Name = "Steve", BaseSalary = 50000}
             };
             
             PayEmployees(employees);
@@ -25,15 +25,7 @@ namespace Inheritance15
         {
             foreach (var employee in employees)
             {
-                if (employee.GetType() == typeof(HourlyEmployee))
-                {
-                    employee.PayEmployee(40, 27.50);
-                }
-
-                if (employee.GetType() == typeof(SalariedEmployee))
-                {
-                    employee.PayEmployee(40, 50000);
-                }
+                employee.PayEmployee();
             }
         }
     }
@@ -42,15 +34,16 @@ namespace Inheritance15
     {
         public string Name { get; set; }
 
-        public abstract void PayEmployee(int time, double rate);
+        public abstract void PayEmployee();
 
     }
 
     public class HourlyEmployee : Employee
     {
-        public override void PayEmployee(int hoursWorked, double payRate)
+        public double HourlyRate { get; set; }          
+        public override void PayEmployee()
         {
-            var payCheck = hoursWorked * payRate;
+            var payCheck = 40 * HourlyRate;
             Console.WriteLine($"{Name} has been paid {payCheck:C}");
         }
     }
@@ -58,9 +51,9 @@ namespace Inheritance15
     public class SalariedEmployee : Employee
     {
         public double BaseSalary { get; set; }
-        public override void PayEmployee(int hoursWorked, double yearlyRate)
+        public override void PayEmployee()
         {
-            var payCheck = yearlyRate / 26;
+            var payCheck = BaseSalary / 26;
             Console.WriteLine($"{Name} has been paid {payCheck:C}");
         }
     }
